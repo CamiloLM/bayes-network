@@ -37,9 +37,9 @@ from pydub import AudioSegment
 # Lista completa de voces: `py -m edge_tts --list-voices`
 VOCES = {
     "NARRADOR": "es-CO-GonzaloNeural",
-    "PROFESORA": "es-CO-SalomeNeural",
-    "ESTUDIANTE": "es-MX-JorgeNeural",
-    "ANALISTA": "es-MX-DaliaNeural",
+    "PROFESORA": "es-MX-DaliaNeural",
+    "ESTUDIANTE": "es-PE-CamilaNeural",
+    "ANALISTA": "es-PE-AlexNeural",
     "IA": "es-US-AlonsoNeural",
 }
 
