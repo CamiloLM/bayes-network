@@ -8,6 +8,10 @@ El guion (guion/guion.txt) se divide en escenas con líneas que empiezan por
     [TEXTO_TTS] Texto que se va a sintetizar. [/TEXTO_TTS]
     [PAUSA_DESPUÉS: 1.5]
 
+Una escena marcada con [SIN_VOZ] y [DURACIÓN: n] no lleva bloques: su
+completo.mp3 es silencio de n segundos (así todos los clips tienen audio y se
+pueden unir sin recodificar).
+
 Si el guion no tiene encabezados "ESCENA N", todo el archivo es la escena 1.
 
 Salidas, por escena (audio/escenaNN/):
@@ -57,6 +61,8 @@ RE_ESCENA = re.compile(r"^ESCENA\s+(\d+)\b.*$", re.IGNORECASE | re.MULTILINE)
 RE_VOZ = re.compile(r"\[VOZ:\s*([^\]]+?)\s*\]", re.IGNORECASE)
 RE_TEXTO = re.compile(r"\[TEXTO_TTS\](.*?)\[/TEXTO_TTS\]", re.IGNORECASE | re.DOTALL)
 RE_PAUSA = re.compile(r"\[PAUSA_DESPU[ÉE]S:\s*([\d.,]+)\s*s?\s*\]", re.IGNORECASE)
+RE_SIN_VOZ = re.compile(r"\[SIN_VOZ\]", re.IGNORECASE)
+RE_DURACION = re.compile(r"\[DURACI[ÓO]N:\s*([\d.,]+)\s*s?\s*\]", re.IGNORECASE)
 
 
 @dataclass
@@ -104,6 +110,16 @@ def parsear_bloques(contenido: str, escena: int) -> list[Bloque]:
 
         bloques.append(Bloque(voz=marca.group(1).strip(), texto=texto, pausa=pausa))
     return bloques
+
+
+def duracion_sin_voz(contenido: str, escena: int) -> float | None:
+    """Duración de una escena [SIN_VOZ], o None si la escena tiene voz."""
+    if not RE_SIN_VOZ.search(contenido):
+        return None
+    m = RE_DURACION.search(contenido)
+    if not m:
+        raise ValueError(f"La escena {escena} es [SIN_VOZ] pero no tiene [DURACIÓN: n].")
+    return float(m.group(1).replace(",", "."))
 
 
 def resolver_voz(nombre: str) -> str:
@@ -155,11 +171,22 @@ def montar(bloques: list[Bloque], rutas: list[Path], dir_escena: Path) -> dict:
 
 
 def generar_escena(numero: int, contenido: str) -> float:
-    bloques = parsear_bloques(contenido, numero)
-    for b in bloques:
-        resolver_voz(b.voz)  # falla antes de sintetizar si falta alguna voz
-
     dir_escena = DIR_AUDIO / f"escena{numero:02d}"
+
+    duracion = duracion_sin_voz(contenido, numero)
+    if duracion is not None:
+        dir_escena.mkdir(parents=True, exist_ok=True)
+        AudioSegment.silent(duration=round(duracion * 1000), frame_rate=24000).export(
+            dir_escena / "completo.mp3", format="mp3"
+        )
+        resultado = {"sin_voz": True, "duracion_total": duracion, "bloques": []}
+        (dir_escena / "timings.json").write_text(
+            json.dumps(resultado, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+        print(f"Escena {numero}: sin voz ({duracion:.1f} s)")
+        return duracion
+
+    bloques = parsear_bloques(contenido, numero)
     print(f"Escena {numero}: {len(bloques)} bloques")
     rutas = asyncio.run(sintetizar(bloques, dir_escena / "bloques"))
     resultado = montar(bloques, rutas, dir_escena)
@@ -184,8 +211,9 @@ def main() -> None:
 
     # Valida todo el guion antes de gastar tiempo sintetizando.
     for n in elegidas:
-        for b in parsear_bloques(escenas[n], n):
-            resolver_voz(b.voz)
+        if duracion_sin_voz(escenas[n], n) is None:
+            for b in parsear_bloques(escenas[n], n):
+                resolver_voz(b.voz)
 
     total = sum(generar_escena(n, escenas[n]) for n in elegidas)
     minutos, segundos = divmod(total, 60)
