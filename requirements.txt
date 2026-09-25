@@ -1,8 +1,10 @@
+audioop-lts==0.2.2 ; python_version >= "3.13"
 av==18.1.0
 beautifulsoup4==4.15.0
 click==8.5.0
 cloup==4.0.0
 decorator==5.3.1
+edge-tts==7.2.8
 glcontext==3.0.0
 isosurfaces==0.1.2
 manim==0.21.0
