@@ -1,0 +1,72 @@
+RAZONAMIENTO PROBABILÍSTICO: ¿CÓMO PIENSA UNA IA CUANDO NO TIENE CERTEZA?
+Duración estimada: 28 a 30 minutos (según la velocidad de la voz: 140 a 130 palabras por minuto, con pausas de lectura en los cálculos)
+Fuente principal: Capítulo 13, "Probabilistic Reasoning", de Stuart J. Russell y Peter Norvig, Artificial Intelligence: A Modern Approach (4.ª ed.).
+Voces: Narrador, Profesora, Estudiante, Analista e IA.
+
+Convenciones:
+- Los [VISUAL] muestran los cálculos completos con cifras.
+- El [TEXTO_TTS] solo dice resultados redondeados, escritos como deben pronunciarse.
+- Redes del libro que se usan: red de la alarma (secciones 13.1 a 13.3) y red del aspersor (secciones 13.4 y 13.5).
+
+
+00:00 – 01:48
+ESCENA 1 — LA ALARMA
+[INICIO: 00:00]
+
+[VOZ: NARRADOR]
+[VISUAL: Un estudiante en clase. Todo está tranquilo. De repente vibra el celular.]
+[TEXTO_TTS]
+Imagina que estás en clase de Modelos Estocásticos, un día cualquiera.
+Todo está tranquilo.
+De repente...
+te entra una llamada.
+Es John, tu vecino de al lado.
+Te dice que escuchó la alarma de robo de tu casa.
+Empiezas a preocuparte.
+¿Alguien entró?
+¿O se activó por accidente?
+Unos segundos después, otra llamada.
+Es Mary, tu otra vecina.
+Ella tampoco sabe qué pasó, pero dice que también oyó la alarma.
+Ahora tienes dos testigos.
+Pero ninguno vio nada. Solo oyeron un ruido.
+Y tú ni siquiera estás ahí para comprobarlo.
+La pregunta es:
+¿qué deberías creer que ocurrió?
+Y, más importante todavía...
+¿cómo respondería esa pregunta una computadora?
+[/TEXTO_TTS]
+[PAUSA_DESPUÉS: 0.5]
+
+[VOZ: ESTUDIANTE]
+[VISUAL: Aparece en pantalla: "¿Hubo un robo?"]
+[TEXTO_TTS]
+Bueno... si dos personas llamaron por la alarma, yo diría que es bastante probable que haya un robo.
+[/TEXTO_TTS]
+
+[VOZ: PROFESORA]
+[TEXTO_TTS]
+Guarda esa respuesta. Vamos a volver a ella.
+Pero fíjate en la palabra que usaste:
+"probable".
+No dijiste "seguro".
+Y ahí empieza el problema que vamos a estudiar.
+Una máquina inteligente casi nunca sabe con certeza qué ocurrió.
+Tiene que razonar con información incompleta, combinar evidencia y actualizar lo que cree cuando aparece algo nuevo.
+[/TEXTO_TTS]
+
+[VOZ: IA]
+[TEXTO_TTS]
+Entonces mi respuesta no debería ser "sí" o "no".
+Debería ser un número:
+qué tan probable es el robo, dada la evidencia que tengo.
+[/TEXTO_TTS]
+
+[VOZ: NARRADOR]
+[VISUAL: Título: "Razonamiento probabilístico — Capítulo 13"]
+[TEXTO_TTS]
+Durante los próximos treinta minutos vamos a construir, paso a paso, una forma de representar la incertidumbre, de calcular con ella y, finalmente, de distinguir algo todavía más interesante:
+observar que algo ocurrió...
+de hacer que algo ocurra.
+[/TEXTO_TTS]
+[FIN: 01:48]
