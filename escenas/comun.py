@@ -59,6 +59,39 @@ class EscenaNarrada(Scene):
         """Espera a que termine la escena (audio o [DURACIÓN]), más un margen."""
         self.esperar_hasta(self.duracion_total + margen)
 
+    def momento(self, bloque: dict, frase: str) -> float:
+        """Segundo aproximado en que se dice `frase` dentro del bloque (por proporción de texto)."""
+        i = bloque["texto"].find(frase)
+        if i < 0:
+            raise ValueError(f"'{frase}' no está en el bloque {bloque['indice']}")
+        return bloque["inicio"] + bloque["duracion"] * i / len(bloque["texto"])
+
+    def en(self, bloque: dict, frase: str):
+        """Espera hasta que se diga `frase`."""
+        self.esperar_hasta(self.momento(bloque, frase))
+
+    def consolidar(self, grupo: Mobject):
+        """Tras animar las piezas de `grupo` por separado, deja solo `grupo` en escena."""
+        familia = set(grupo.get_family())
+        self.remove(*(m for m in self.mobjects if m in familia))
+        self.add(grupo)
+
+    def cambiar(self, viejo: Mobject, nuevo: Mobject, run_time: float = 0.8):
+        """Reemplaza `viejo` por `nuevo` con un fundido (sin dejar copias en escena)."""
+        self.play(FadeOut(viejo), FadeIn(nuevo), run_time=run_time)
+
+    def limpiar(self, run_time: float = 0.5):
+        """Desvanece todo lo que hay en pantalla."""
+        if self.mobjects:
+            self.play(*(FadeOut(m) for m in self.mobjects), run_time=run_time)
+
+    def revelar(self, partes, desde: float, hasta: float, animacion=FadeIn, **kwargs):
+        """Muestra cada parte, repartidas entre los segundos `desde` y `hasta`."""
+        paso = (hasta - desde) / max(len(partes), 1)
+        for i, parte in enumerate(partes):
+            self.esperar_hasta(desde + i * paso)
+            self.play(animacion(parte, **kwargs), run_time=min(0.8, max(paso * 0.8, 0.2)))
+
     # --- Revisión de disposición --------------------------------------------
 
     def play(self, *args, **kwargs):
@@ -66,9 +99,19 @@ class EscenaNarrada(Scene):
         self.revisar_disposicion()
 
     def revisar_disposicion(self):
+        # Al animar una pieza de un grupo (p. ej. un nodo de la red), Manim la
+        # agrega suelta a la escena; esas piezas ya están dentro de otro objeto.
+        tops = list(self.mobjects)
+        familias = [{id(x) for x in m.get_family()[1:]} for m in tops]
+
+        def contenido_en_otro(i: int, m: Mobject) -> bool:
+            otros = set().union(*(f for j, f in enumerate(familias) if j != i))
+            return id(m) in otros or bool(m.submobjects) and all(id(s) in otros for s in m.submobjects)
+
         visibles = [
-            m for m in self.mobjects
-            if not getattr(m, "permite_solape", False) and m.width > 0 and m.height > 0 and _visible(m)
+            m for i, m in enumerate(tops)
+            if not getattr(m, "permite_solape", False) and not contenido_en_otro(i, m)
+            and m.width > 0 and m.height > 0 and _visible(m)
         ]
         ancho, alto = config.frame_width / 2, config.frame_height / 2
         for m in visibles:

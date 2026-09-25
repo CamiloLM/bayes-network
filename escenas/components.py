@@ -31,6 +31,32 @@ def titulo(contenido: str, tam: float = TAM_TITULO, color=TEXTO, **kwargs) -> Te
     return _texto(contenido, tam, font=FUENTE_TITULO, color=color, weight=BOLD, **kwargs)
 
 
+def parrafo(contenido: str, tam: float = TAM_CUERPO, color=TEXTO, negrita: bool = False,
+            alineacion=None, buff: float = 0.18, **kwargs) -> VGroup:
+    """Varias líneas (separadas por salto de línea) centradas, o alineadas con alineacion=LEFT."""
+    hacer = titulo if negrita else texto
+    lineas = VGroup(*(hacer(l, tam, color, **kwargs) for l in contenido.splitlines()))
+    return lineas.arrange(DOWN, buff=buff, aligned_edge=alineacion if alineacion is not None else ORIGIN)
+
+
+def partes(t: Text, *trozos: str) -> list[VGroup]:
+    """Glifos de cada trozo de `t`, en orden, para animarlos por separado.
+
+    Una fila de palabras debe ser un solo Text (así comparte línea base);
+    con esto se revela por partes: a, b = partes(t, "probable", "seguro").
+    """
+    letras = "".join(t.text.split())
+    if len(letras) != len(t.submobjects):
+        raise ValueError(f"no se pudo mapear glifos de {t.text!r}")
+    grupos, desde = [], 0
+    for trozo in trozos:
+        trozo = "".join(trozo.split())
+        i = letras.index(trozo, desde)
+        grupos.append(VGroup(*t.submobjects[i:i + len(trozo)]))
+        desde = i + len(trozo)
+    return grupos
+
+
 def titulo_seccion(contenido: str, subtitulo: str | None = None) -> VGroup:
     """Título grande de sección ("CASO 1 — OBSERVAR", "Conclusiones...")."""
     grupo = VGroup(titulo(contenido))
@@ -56,6 +82,35 @@ def bloque_calculo(encabezado: str, lineas: list) -> VGroup:
     return VGroup(titulo(encabezado, TAM_SUBTITULO, RESALTADO), cuerpo).arrange(
         DOWN, buff=SEPARACION * 1.5, aligned_edge=LEFT
     )
+
+
+def formula(tex: str, tam: float = TAM_FORMULA, color=TEXTO, **kwargs) -> MathTex:
+    """Fórmula en LaTeX (decimales con coma: 0{,}95)."""
+    return MathTex(tex, font_size=tam, color=color, **kwargs)
+
+
+def tabla_formulas(filas: list[list[str]], tam: float = TAM_FORMULA - 6, alineacion: str | None = None,
+                   buff=(0.5, 0.3)) -> VGroup:
+    """Filas de fórmulas alineadas en columnas (celdas vacías permitidas).
+
+    grupo.filas[i] devuelve la fila i como VGroup, para revelarla o resaltarla.
+    """
+    columnas = max(len(f) for f in filas)
+    celdas = VGroup()
+    for fila in filas:
+        for j in range(columnas):
+            tex = fila[j] if j < len(fila) else ""
+            celdas.add(formula(tex, tam) if tex else VectorizedPoint())
+    celdas.arrange_in_grid(
+        rows=len(filas), cols=columnas, buff=buff, col_alignments=alineacion or "l" * columnas
+    )
+    celdas.filas = [VGroup(*celdas[i * columnas:(i + 1) * columnas]) for i in range(len(filas))]
+    return celdas
+
+
+def nota(contenido: str, tam: float = TAM_PEQUENO) -> Text:
+    """Texto secundario pequeño (aclaraciones, fuentes)."""
+    return texto(contenido, tam, TEXTO_SECUNDARIO)
 
 
 def resultado_destacado(contenido: str, tam: int = 56) -> VGroup:
@@ -149,35 +204,44 @@ class RedBayesiana(VGroup):
             LaggedStart(*(GrowArrow(f) for f in self.flechas.values()), lag_ratio=lag),
         )
 
-    def estados(self, **estados: str) -> AnimationGroup:
-        """Anima el estado de varios nodos: red.estados(alarma="activo", robo="inactivo").
-
-        Las flechas que tocan un nodo inactivo se atenúan con él.
-        """
-        animaciones = [self.nodos[id_].animate.estilo(e) for id_, e in estados.items()]
-        final = {id_: estados.get(id_, n.estado) for id_, n in self.nodos.items()}
+    def aplicar_estados(self, **estados: str) -> "RedBayesiana":
+        """Cambia el estado de varios nodos sin animar. Las flechas que tocan
+        un nodo inactivo se atenúan con él."""
+        for id_, e in estados.items():
+            self.nodos[id_].estilo(e)
         for (a, b), flecha in self.flechas.items():
-            opacidad = min(ESTILOS_NODO[final[a]]["opacidad"], ESTILOS_NODO[final[b]]["opacidad"])
-            animaciones.append(flecha.animate.set_opacity(opacidad))
-        return AnimationGroup(*animaciones)
+            opacidad = min(ESTILOS_NODO[self.nodos[a].estado]["opacidad"],
+                           ESTILOS_NODO[self.nodos[b].estado]["opacidad"])
+            flecha.set_opacity(opacidad)
+        return self
 
-    def restablecer(self) -> AnimationGroup:
+    def estados(self, **estados: str):
+        """Animación: red.estados(alarma="activo", robo="inactivo").
+
+        Anima la red entera (animar un nodo suelto parte la red en piezas
+        dentro de la escena).
+        """
+        return self.animate.aplicar_estados(**estados)
+
+    def restablecer(self):
         return self.estados(**{id_: "normal" for id_ in self.nodos})
 
-    def renombrar(self, **nombres: str) -> AnimationGroup:
-        """Cambia nombres visibles (escena 10: Robo -> Falla del enlace, ...)."""
-        nuevos = {
-            id_: Nodo(nombre, self.nodos[id_].estado).move_to(self.nodos[id_].get_center())
-            for id_, nombre in nombres.items()
-        }
-        animaciones = [Transform(self.nodos[id_], nuevo) for id_, nuevo in nuevos.items()]
-        for (a, b), flecha in self.flechas.items():
-            if a in nuevos or b in nuevos:
-                destino = flecha_entre(nuevos.get(a, self.nodos[a]), nuevos.get(b, self.nodos[b]))
-                animaciones.append(Transform(flecha, destino))
+    def aplicar_nombres(self, **nombres: str) -> "RedBayesiana":
+        """Cambia nombres visibles sin animar; las flechas se ajustan a las cajas nuevas."""
         for id_, nombre in nombres.items():
-            self.nodos[id_].nombre = nombre
-        return AnimationGroup(*animaciones)
+            viejo = self.nodos[id_]
+            nuevo = Nodo(nombre, viejo.estado).move_to(viejo.get_center())
+            viejo.nombre = nombre
+            viejo.caja.become(nuevo.caja)
+            viejo.etiqueta.become(nuevo.etiqueta)
+        for (a, b), flecha in self.flechas.items():
+            if a in nombres or b in nombres:
+                flecha.become(flecha_entre(self.nodos[a], self.nodos[b]))
+        return self.aplicar_estados()  # become() restablece la opacidad de las flechas
+
+    def renombrar(self, **nombres: str):
+        """Animación: cambia nombres visibles (escena 10: Robo -> Falla del enlace, ...)."""
+        return self.animate.aplicar_nombres(**nombres)
 
 
 def red_alarma(escala: float = 1.0) -> RedBayesiana:
@@ -293,7 +357,8 @@ def celular(mensaje: str | None = None) -> VGroup:
     camara = Dot(radius=0.04, color=TEXTO_SECUNDARIO).move_to(cuerpo.get_top() + DOWN * 0.13)
     grupo = VGroup(cuerpo, pantalla, camara)
     if mensaje:
-        aviso = texto(mensaje, 18)
+        # "Camilo llamando..." -> dos líneas para que se lea dentro de la pantalla.
+        aviso = parrafo(mensaje.replace(" ", "\n", 1), 24, buff=0.1)
         if aviso.width > pantalla.width - 0.2:
             aviso.scale_to_fit_width(pantalla.width - 0.2)
         grupo.add(aviso.move_to(pantalla))
