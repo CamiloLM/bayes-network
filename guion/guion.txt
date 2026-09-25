@@ -1,32 +1,69 @@
 RAZONAMIENTO PROBABILÍSTICO: ¿CÓMO PIENSA UNA IA CUANDO NO TIENE CERTEZA?
-Duración estimada: 28 a 30 minutos (según la velocidad de la voz: 140 a 130 palabras por minuto, con pausas de lectura en los cálculos)
-Fuente principal: Capítulo 13, "Probabilistic Reasoning", de Stuart J. Russell y Peter Norvig, Artificial Intelligence: A Modern Approach (4.ª ed.).
+Asignatura: Modelos Estocásticos y Simulación en Computación y Comunicaciones — Grupo 2 — 2026-2
+Profesor: Jorge Eduardo Ortiz Triviño
+Capítulo expuesto: Capítulo 13, "Probabilistic Reasoning" (Razonamiento probabilístico), de S. J. Russell y P. Norvig, Artificial Intelligence: A Modern Approach, 4.ª ed., pp. 412–454.
+Duración estimada: aproximadamente 30 minutos (voz a 140 palabras por minuto, con pausas de lectura; a 130 palabras por minuto se alarga cerca de dos minutos)
 Voces: Narrador, Profesora, Estudiante, Analista e IA.
 
 Convenciones:
-- Los [VISUAL] muestran los cálculos completos con cifras.
-- El [TEXTO_TTS] solo dice resultados redondeados, escritos como deben pronunciarse.
+- Cada [VISUAL] empieza con "Rótulo: <PERSONAJE>": es el nombre de quien habla y debe mostrarse en pantalla (etiqueta inferior o junto a su avatar) mientras dura su intervención.
+- Los [VISUAL] muestran los cálculos completos con cifras; el TEXTO_TTS solo dice resultados redondeados, escritos como deben pronunciarse.
+- [SIN_VOZ] marca pantallas sin narración (portada, referencias y créditos); [DURACIÓN: n] indica cuántos segundos se muestran.
+- [PAUSA_DESPUÉS: n] deja n segundos para leer un cálculo antes de la siguiente intervención.
 - Redes del libro que se usan: red de la alarma (secciones 13.1 a 13.3) y red del aspersor (secciones 13.4 y 13.5).
+- Estructura según la rúbrica: 1. Portada (escena 0) · 2. Desarrollo teórico (escenas 1 a 9) · 3. Análisis y aplicación (escena 10) · 4. Conclusiones y recomendaciones (escena 11) · 5. Referencias (escena 12) · 6. Créditos de roles (escena 13).
 
 
-00:00 – 01:48
-ESCENA 1 — LA ALARMA
+00:00 – 00:12
+ESCENA 0 — PORTADA
 [INICIO: 00:00]
+[SIN_VOZ]
+[DURACIÓN: 12]
+[VISUAL: Portada, fondo sobrio. Sin narración, solo música suave.
+ Arriba al centro: logo oficial de la Universidad Nacional de Colombia (archivo: assets/logo_unal.png)
+ Debajo del logo: UNIVERSIDAD NACIONAL DE COLOMBIA
+
+ Asignatura: MODELOS ESTOCÁSTICOS Y SIMULACIÓN EN COMPUTACIÓN Y COMUNICACIONES
+ Grupo 2 · Semestre 2026-2
+
+ Título grande: CAPÍTULO 13 — RAZONAMIENTO PROBABILÍSTICO
+ Subtítulo: Redes bayesianas, inferencia y causalidad
+ Basado en: Russell y Norvig, Artificial Intelligence: A Modern Approach (4.ª ed.)
+
+ Expositores:
+   Julián David Albarracín Galindo
+   Andrés David Caro Mora
+   Daniel Alfonso Cely Infante
+   Camilo Ferney Londoño Moreno
+   Daniel Alejandro Ochoa Ruiz
+   Sara Isabel Ospina Valderrama
+   Juan Camilo Vergara Tao
+
+ Profesor: Jorge Eduardo Ortiz Triviño
+
+ Pie de pantalla: Universidad Nacional de Colombia · 2026]
+[FIN: 00:12]
+
+
+00:12 – 02:00
+ESCENA 1 — LA ALARMA
+[INICIO: 00:12]
 
 [VOZ: NARRADOR]
-[VISUAL: Un estudiante en clase. Todo está tranquilo. De repente vibra el celular.]
+[VISUAL: Rótulo: NARRADOR
+ Un estudiante en clase. Todo está tranquilo. De repente vibra el celular.]
 [TEXTO_TTS]
 Imagina que estás en clase de Modelos Estocásticos, un día cualquiera.
 Todo está tranquilo.
 De repente...
 te entra una llamada.
-Es John, tu vecino de al lado.
+Es Camilo, tu vecino de al lado.
 Te dice que escuchó la alarma de robo de tu casa.
 Empiezas a preocuparte.
 ¿Alguien entró?
 ¿O se activó por accidente?
 Unos segundos después, otra llamada.
-Es Mary, tu otra vecina.
+Es Isabel, tu otra vecina.
 Ella tampoco sabe qué pasó, pero dice que también oyó la alarma.
 Ahora tienes dos testigos.
 Pero ninguno vio nada. Solo oyeron un ruido.
@@ -39,12 +76,14 @@ Y, más importante todavía...
 [PAUSA_DESPUÉS: 0.5]
 
 [VOZ: ESTUDIANTE]
-[VISUAL: Aparece en pantalla: "¿Hubo un robo?"]
+[VISUAL: Rótulo: ESTUDIANTE
+ Aparece en pantalla: "¿Hubo un robo?"]
 [TEXTO_TTS]
 Bueno... si dos personas llamaron por la alarma, yo diría que es bastante probable que haya un robo.
 [/TEXTO_TTS]
 
 [VOZ: PROFESORA]
+[VISUAL: Rótulo: PROFESORA · Se mantiene el fondo anterior.]
 [TEXTO_TTS]
 Guarda esa respuesta. Vamos a volver a ella.
 Pero fíjate en la palabra que usaste:
@@ -56,6 +95,7 @@ Tiene que razonar con información incompleta, combinar evidencia y actualizar l
 [/TEXTO_TTS]
 
 [VOZ: IA]
+[VISUAL: Rótulo: IA · Se mantiene el fondo anterior.]
 [TEXTO_TTS]
 Entonces mi respuesta no debería ser "sí" o "no".
 Debería ser un número:
@@ -63,10 +103,1170 @@ qué tan probable es el robo, dada la evidencia que tengo.
 [/TEXTO_TTS]
 
 [VOZ: NARRADOR]
-[VISUAL: Título: "Razonamiento probabilístico — Capítulo 13"]
+[VISUAL: Rótulo: NARRADOR
+ Título: "Razonamiento probabilístico — Capítulo 13"]
 [TEXTO_TTS]
 Durante los próximos treinta minutos vamos a construir, paso a paso, una forma de representar la incertidumbre, de calcular con ella y, finalmente, de distinguir algo todavía más interesante:
 observar que algo ocurrió...
 de hacer que algo ocurra.
 [/TEXTO_TTS]
-[FIN: 01:48]
+[FIN: 02:00]
+
+
+02:00 – 03:28
+ESCENA 2 — LA EXPLOSIÓN DE DATOS
+[INICIO: 02:00]
+
+[VOZ: ANALISTA]
+[VISUAL: Rótulo: ANALISTA
+ Cinco variables aparecen una por una, cada una con "V / F":
+Robo · Terremoto · Alarma · Llama Camilo · Llama Isabel]
+[TEXTO_TTS]
+Intentemos resolverlo a lo bruto.
+Nuestro problema tiene cinco variables: Robo, Terremoto, Alarma, Llama Camilo y Llama Isabel.
+Cada una puede ser verdadera o falsa.
+Si quiero saberlo todo sobre este pequeño mundo, necesito la probabilidad de cada combinación posible.
+Eso se llama la distribución conjunta completa.
+[/TEXTO_TTS]
+
+[VOZ: IA]
+[VISUAL: Rótulo: IA
+ Se despliega una tabla larga:
+
+ Robo | Terremoto | Alarma | Camilo | Isabel | Probabilidad
+  V   |     V     |   V    |  V   |  V   |     ...
+  V   |     V     |   V    |  V   |  F   |     ...
+  V   |     V     |   V    |  F   |  V   |     ...
+  ...
+  F   |     F     |   F    |  F   |  F   |     ...
+
+ Contador: 2⁵ = 32 filas]
+[TEXTO_TTS]
+Dos posibilidades por variable, cinco variables.
+Dos elevado a la cinco: treinta y dos filas.
+Es manejable. Cabe en una hoja de cálculo.
+[/TEXTO_TTS]
+
+[VOZ: ESTUDIANTE]
+[VISUAL: Rótulo: ESTUDIANTE · Se mantiene el fondo anterior.]
+[TEXTO_TTS]
+Entonces, ¿cuál es el problema?
+[/TEXTO_TTS]
+
+[VOZ: ANALISTA]
+[VISUAL: Rótulo: ANALISTA
+ El contador sube:
+
+   5 variables  →  2⁵   = 32
+  20 variables  →  2²⁰  ≈ 1 millón
+  50 variables  →  2⁵⁰  ≈ 10¹⁵
+ 100 variables  →  2¹⁰⁰ ≈ 1,27 × 10³⁰]
+[TEXTO_TTS]
+Que el mundo real no tiene cinco variables.
+Un sistema de diagnóstico médico maneja enfermedades, síntomas, exámenes, antecedentes.
+Pongamos cien variables. Nada exagerado.
+Dos elevado a la cien es, más o menos, un uno seguido de treinta ceros.
+[/TEXTO_TTS]
+
+[VOZ: IA]
+[VISUAL: Rótulo: IA
+ Escribiendo 1.000.000.000 de filas por segundo:
+ 1,27 × 10³⁰ filas      →  ≈ 40 billones de años
+ Edad del universo      ≈ 13.800 millones de años
+ → casi 3.000 veces la edad del universo]
+[TEXTO_TTS]
+Si yo escribiera mil millones de filas por segundo, tardaría unos cuarenta billones de años en llenar esa tabla.
+Casi tres mil veces la edad del universo.
+Y eso solo para guardarla. Todavía no he respondido ninguna pregunta.
+[/TEXTO_TTS]
+
+[VOZ: NARRADOR]
+[VISUAL: Rótulo: NARRADOR
+ Texto grande: "¿Cómo razona una IA con incertidumbre sin que le explote la memoria?"]
+[TEXTO_TTS]
+Y sin embargo, las máquinas diagnostican enfermedades, filtran correos basura y detectan fraudes.
+¿Cómo razonan con incertidumbre sin que les explote la memoria?
+La respuesta es una de las ideas centrales del capítulo:
+las redes bayesianas.
+Y su truco es sorprendentemente simple:
+no todo depende de todo.
+[/TEXTO_TTS]
+[FIN: 03:28]
+
+
+03:28 – 06:06
+ESCENA 3 — CONSTRUYENDO UNA RED BAYESIANA
+[INICIO: 03:28]
+
+[VOZ: PROFESORA]
+[VISUAL: Rótulo: PROFESORA
+ Se construye el grafo progresivamente:
+
+   Robo        Terremoto
+      ↘        ↙
+        Alarma
+      ↙        ↘
+ Llama Camilo   Llama Isabel]
+[TEXTO_TTS]
+Construyamos la red.
+Un robo puede activar la alarma. Un terremoto también.
+Por eso dibujamos una flecha de Robo hacia Alarma, y otra de Terremoto hacia Alarma.
+Si la alarma suena, es más probable que Camilo llame. Lo mismo con Isabel.
+Así que dibujamos una flecha de Alarma hacia cada vecino.
+Fíjense en lo que no dibujamos: no hay flecha del robo hacia Camilo.
+Camilo no ve al ladrón. Camilo solo oye la alarma.
+[/TEXTO_TTS]
+
+[VOZ: ANALISTA]
+[VISUAL: Rótulo: ANALISTA
+ "Red bayesiana = grafo dirigido acíclico + una tabla de probabilidad condicional en cada nodo"
+Animación: se intenta dibujar una flecha de Llama Isabel hacia Robo que cerraría un ciclo. Aparece una X roja.]
+[TEXTO_TTS]
+Formalmente, una red bayesiana es un grafo dirigido y acíclico.
+Cada nodo es una variable aleatoria.
+Cada flecha va de un nodo padre hacia un nodo hijo.
+Y no puede haber ciclos: si sigues las flechas, nunca vuelves al punto de partida.
+[/TEXTO_TTS]
+
+[VOZ: ESTUDIANTE]
+[VISUAL: Rótulo: ESTUDIANTE · Se mantiene el fondo anterior.]
+[TEXTO_TTS]
+¿Entonces cada flecha significa que una variable causa la otra?
+[/TEXTO_TTS]
+
+[VOZ: PROFESORA]
+[VISUAL: Rótulo: PROFESORA · Se mantiene el fondo anterior.]
+[TEXTO_TTS]
+No necesariamente, y esta distinción es importante.
+En una red bayesiana, una flecha representa una dependencia probabilística directa dentro del modelo.
+Muchas veces coincide con una causa, como en este ejemplo. Pero la red, por sí sola, no afirma que lo sea.
+Al final veremos qué cambia cuando sí queremos hablar de causas.
+[/TEXTO_TTS]
+
+[VOZ: IA]
+[VISUAL: Rótulo: IA
+ Aparecen las tablas junto a cada nodo:
+
+ P(Robo) = 0,001            P(Terremoto) = 0,002
+
+ Robo | Terremoto | P(Alarma)
+  V   |     V     |   0,95
+  V   |     F     |   0,94
+  F   |     V     |   0,29
+  F   |     F     |   0,001
+
+ Alarma | P(Llama Camilo) | P(Llama Isabel)
+   V    |     0,90      |     0,70
+   F    |     0,05      |     0,01]
+[TEXTO_TTS]
+Ahora los números.
+Cada nodo tiene una tabla de probabilidad condicional, que solo mira a sus padres.
+Robo y Terremoto no tienen padres, así que llevan una probabilidad previa.
+Un robo: uno en mil. Un terremoto: dos en mil.
+La alarma depende de ambos. Con ladrón, suena casi siempre. Con un temblor solo, suena en el veintinueve por ciento de los casos. Sin nada, casi nunca.
+Camilo oye la alarma el noventa por ciento de las veces, pero en un cinco por ciento de los casos confunde su teléfono con ella.
+Isabel escucha música alta: solo la oye el setenta por ciento de las veces.
+[/TEXTO_TTS]
+[PAUSA_DESPUÉS: 4]
+
+[VOZ: PROFESORA]
+[VISUAL: Rótulo: PROFESORA · Se mantiene el fondo anterior.]
+[TEXTO_TTS]
+La música de Isabel y el teléfono de Camilo no aparecen como nodos.
+Están resumidos dentro de los números.
+Así maneja la red todo lo que no queremos, o no podemos, modelar en detalle.
+[/TEXTO_TTS]
+
+[VOZ: ANALISTA]
+[VISUAL: Rótulo: ANALISTA
+ Contador:
+ Red bayesiana:  1 + 1 + 4 + 2 + 2 = 10 números
+ Tabla conjunta: 31 números]
+[TEXTO_TTS]
+Contemos: uno, más uno, más cuatro, más dos, más dos.
+Diez números.
+La tabla completa necesitaba treinta y uno.
+Y con estos diez podemos reconstruir cualquiera de sus treinta y dos filas.
+[/TEXTO_TTS]
+[FIN: 06:06]
+
+
+06:06 – 09:16
+ESCENA 4 — ¿QUÉ SIGNIFICA REALMENTE LA RED?
+[INICIO: 06:06]
+
+[VOZ: NARRADOR]
+[VISUAL: Rótulo: NARRADOR
+ La red de la alarma con sus tablas permanece en pantalla.]
+[TEXTO_TTS]
+Ahora tenemos un dibujo con números.
+Pero ¿qué significa matemáticamente?
+[/TEXTO_TTS]
+
+[VOZ: PROFESORA]
+[VISUAL: Rótulo: PROFESORA
+ Fórmula de factorización:
+
+ P(x₁, …, xₙ) = ∏ᵢ P(xᵢ | padres(Xᵢ))]
+[TEXTO_TTS]
+Significa que la probabilidad de cualquier combinación completa es el producto de las tablas locales.
+Cada variable, dada la información de sus padres.
+Es la regla de la cadena de siempre, pero recortada: cada variable solo recuerda a sus padres.
+[/TEXTO_TTS]
+
+[VOZ: IA]
+[VISUAL: Rótulo: IA
+ Ejemplo: robo, sin terremoto, la alarma sonó, Camilo y Isabel llamaron.
+
+ P(r, ¬t, a, c, i) = P(c | a) · P(i | a) · P(a | r, ¬t) · P(r) · P(¬t)
+                   = 0,90 × 0,70 × 0,94 × 0,001 × 0,998
+                   ≈ 0,000591]
+[TEXTO_TTS]
+Probemos.
+¿Qué tan probable es que haya un robo, sin terremoto, que la alarma suene y que llamen los dos?
+Tomo un número de cada tabla y los multiplico.
+Cinco multiplicaciones: unas seis en diez mil.
+Sin tablas gigantes.
+[/TEXTO_TTS]
+[PAUSA_DESPUÉS: 4]
+
+[VOZ: ESTUDIANTE]
+[VISUAL: Rótulo: ESTUDIANTE · Se mantiene el fondo anterior.]
+[TEXTO_TTS]
+Pero ¿por qué podemos hacer eso? ¿Por qué no hay que mirar toda la red cada vez?
+[/TEXTO_TTS]
+
+[VOZ: PROFESORA]
+[VISUAL: Rótulo: PROFESORA
+ "Independencia condicional"
+Se resaltan Llama Isabel y su padre Alarma. Robo y Terremoto se atenúan.]
+[TEXTO_TTS]
+Por la independencia condicional.
+Piensa en Isabel. ¿Su llamada depende del terremoto?
+Indirectamente sí: el terremoto puede activar la alarma, y la alarma hace que Isabel llame.
+Pero si ya sabes si la alarma sonó, el terremoto no te dice nada nuevo sobre Isabel.
+Isabel solo oye la alarma.
+Eso es independencia condicional: dos variables que están relacionadas en general dejan de aportarse información cuando conoces una tercera.
+[/TEXTO_TTS]
+
+[VOZ: ANALISTA]
+[VISUAL: Rótulo: ANALISTA
+ Regla 1: cada nodo es condicionalmente independiente de sus no descendientes, dados sus padres.
+ Regla 2 (manto de Markov): cada nodo es independiente de todo el resto de la red, dados sus padres, sus hijos y los otros padres de sus hijos.
+Se sombrea el manto de Markov de Alarma: Robo, Terremoto, Llama Camilo y Llama Isabel.]
+[TEXTO_TTS]
+El capítulo lo formaliza así: cada variable es independiente de sus no descendientes, si conocemos a sus padres.
+Y hay una versión más fuerte, el manto de Markov: si conoces a los padres de un nodo, a sus hijos y a los otros padres de sus hijos, el resto de la red ya no te dice nada sobre él.
+Para casos más generales existe un criterio llamado de-separación, que permite leer estas independencias directamente del grafo.
+Guarden la idea del manto de Markov. Va a volver.
+[/TEXTO_TTS]
+
+[VOZ: IA]
+[VISUAL: Rótulo: IA
+ Comparación lado a lado:
+
+ n variables, máximo k padres cada una:
+   Red bayesiana:   n · 2ᵏ
+   Tabla conjunta:  2ⁿ
+
+ 100 variables, máximo 5 padres:
+   Red bayesiana:   100 × 32 = 3.200 números
+   Tabla conjunta:  ≈ 1,27 × 10³⁰ números]
+[TEXTO_TTS]
+Y aquí está la recompensa.
+Si cada variable tiene como máximo cinco padres, cada tabla tiene como máximo treinta y dos números.
+Con cien variables: tres mil doscientos números.
+Contra un uno seguido de treinta ceros.
+Pasamos de tres mil veces la edad del universo a una hoja de cálculo.
+[/TEXTO_TTS]
+
+[VOZ: ANALISTA]
+[VISUAL: Rótulo: ANALISTA
+ OR RUIDOSO (noisy-OR) — Fiebre con tres causas posibles: Resfriado, Gripe, Malaria
+
+ Solo se piden 3 números: la probabilidad de que cada causa, sola, NO produzca fiebre
+   q(Resfriado) = 0,6     q(Gripe) = 0,2     q(Malaria) = 0,1
+
+ El resto de la tabla se construye multiplicando:
+ Resfriado | Gripe | Malaria | P(¬fiebre)               | P(fiebre)
+     V     |   F   |    F    | 0,6                      | 0,4
+     V     |   V   |    F    | 0,6 × 0,2 = 0,12         | 0,88
+     V     |   F   |    V    | 0,6 × 0,1 = 0,06         | 0,94
+     V     |   V   |    V    | 0,6 × 0,2 × 0,1 = 0,012  | 0,988
+     F     |   F   |    F    | 1                        | 0]
+[TEXTO_TTS]
+Y se puede comprimir todavía más, con un atajo del capítulo llamado or ruidoso.
+La fiebre puede venir de un resfriado, una gripe o una malaria. Cada causa, sola, a veces falla en producirla.
+Si esas fallas son independientes, basta con multiplicarlas.
+Con tres números construimos una tabla que tenía ocho filas.
+[/TEXTO_TTS]
+[PAUSA_DESPUÉS: 4]
+
+[VOZ: IA]
+[VISUAL: Rótulo: IA
+ Caso real citado en el capítulo — red médica CPCS (medicina interna)
+ 448 nodos · 906 enlaces
+ Con tablas completas:            133.931.430 parámetros
+ Con or ruidoso y máximo ruidoso:       8.254 parámetros]
+[TEXTO_TTS]
+Y esto no es un ejemplo de juguete.
+El libro menciona una red médica real, llamada CPCS, con cuatrocientas cuarenta y ocho variables de enfermedades y síntomas.
+Con tablas completas necesitaría casi ciento treinta y cuatro millones de números.
+Usando estas relaciones ruidosas, le bastan poco más de ocho mil.
+[/TEXTO_TTS]
+[FIN: 09:16]
+
+
+09:16 – 10:50
+ESCENA 5 — ¿QUÉ HACEMOS CON LA EVIDENCIA?
+[INICIO: 09:16]
+
+[VOZ: NARRADOR]
+[VISUAL: Rótulo: NARRADOR
+ Regreso a la historia. Dos celulares sonando. Texto: "Camilo llamó. Isabel llamó. Nadie vio nada."]
+[TEXTO_TTS]
+Volvamos a la historia.
+Camilo llamó. Isabel llamó.
+Ninguno vio nada, y nosotros no oímos la alarma.
+Ahora queremos responder:
+dado que Camilo y Isabel llamaron, ¿qué tan probable es que haya habido un robo?
+Esta es una pregunta de inferencia.
+[/TEXTO_TTS]
+
+[VOZ: PROFESORA]
+[VISUAL: Rótulo: PROFESORA
+ Antes de la evidencia:    P(Robo) = 0,001               → probabilidad previa
+ Después de la evidencia:  P(Robo | Camilo, Isabel) = ?      → probabilidad posterior]
+[TEXTO_TTS]
+Antes de las llamadas, la probabilidad de robo era de uno en mil. Esa es la probabilidad previa.
+Después de observar la evidencia, calculamos una probabilidad posterior.
+Razonar con probabilidades es eso: actualizar lo que creemos cuando llega información.
+[/TEXTO_TTS]
+[PAUSA_DESPUÉS: 4]
+
+[VOZ: ANALISTA]
+[VISUAL: Rótulo: ANALISTA
+ Redoble. "P(Robo | Camilo llamó, Isabel llamó) ≈ 28,4 %"]
+[TEXTO_TTS]
+Según el capítulo, el resultado es de aproximadamente veintiocho coma cuatro por ciento.
+[/TEXTO_TTS]
+
+[VOZ: PROFESORA]
+[VISUAL: Rótulo: PROFESORA · Se mantiene el fondo anterior.]
+[TEXTO_TTS]
+¿Recuerdas lo que dijiste al principio? Que un robo era bastante probable.
+Pues el modelo dice veintiocho por ciento.
+Es decir: aun con dos vecinos llamando, lo más probable es que no haya ladrón.
+[/TEXTO_TTS]
+
+[VOZ: ESTUDIANTE]
+[VISUAL: Rótulo: ESTUDIANTE · Se mantiene el fondo anterior.]
+[TEXTO_TTS]
+¿En serio? ¿Por qué tan bajo?
+[/TEXTO_TTS]
+
+[VOZ: PROFESORA]
+[VISUAL: Rótulo: PROFESORA · Se mantiene el fondo anterior.]
+[TEXTO_TTS]
+Porque los robos son rarísimos: uno en mil.
+Y porque las dos llamadas se pueden explicar sin ladrón: un temblor, una falsa alarma, un teléfono confundido.
+Y cuidado con el lenguaje: veintiocho por ciento no es una "certeza" de nada.
+Es cuánta creencia justifica la evidencia, dentro de este modelo.
+La evidencia no eliminó la incertidumbre. La cambió: de uno en mil, a casi uno de cada tres.
+[/TEXTO_TTS]
+[FIN: 10:50]
+
+
+10:50 – 14:30
+ESCENA 6 — INFERENCIA EXACTA: DE DÓNDE SALE EL 28,4 %
+[INICIO: 10:50]
+
+[VOZ: NARRADOR]
+[VISUAL: Rótulo: NARRADOR
+ La red de la alarma con todas sus tablas (las mismas de la escena 3).]
+[TEXTO_TTS]
+¿De dónde sale ese veintiocho por ciento?
+Todo lo que necesitamos está en estas tablas.
+Diez números. Nada más.
+[/TEXTO_TTS]
+
+[VOZ: PROFESORA]
+[VISUAL: Rótulo: PROFESORA
+ Consulta:           Robo
+ Evidencia:          Llama Camilo = V, Llama Isabel = V
+ Variables ocultas:  Terremoto, Alarma]
+[TEXTO_TTS]
+Primero ordenamos el problema.
+Lo que queremos saber es Robo: esa es la variable de consulta.
+Lo que sabemos es que Camilo y Isabel llamaron: esa es la evidencia.
+Y lo que no sabemos es si hubo terremoto, ni si la alarma realmente sonó: esas son las variables ocultas.
+Recuerden: nosotros no oímos la alarma. Solo tenemos dos llamadas.
+[/TEXTO_TTS]
+[PAUSA_DESPUÉS: 4]
+
+[VOZ: ANALISTA]
+[VISUAL: Rótulo: ANALISTA
+ Fórmula de enumeración, con cada parte en un color:
+
+ P(Robo | c, i) = α · P(Robo) · Σₜ P(t) · Σₐ P(a | Robo, t) · P(c | a) · P(i | a)
+
+ Σ = sumar sobre lo que no sabemos
+ α = normalizar al final para que todo sume 1]
+[TEXTO_TTS]
+La fórmula parece intimidante, pero dice algo muy simple.
+Multiplicamos las tablas de la red, cada variable dada sus padres.
+Como no sabemos si hubo terremoto ni si sonó la alarma, sumamos sobre todas sus posibilidades.
+Al final, normalizamos.
+Esto se llama inferencia por enumeración.
+[/TEXTO_TTS]
+[PAUSA_DESPUÉS: 4]
+
+[VOZ: IA]
+[VISUAL: Rótulo: IA
+ Paso 1 — ¿Qué tan probable es que llamen los dos?
+
+ Si la alarma sonó:     0,90 × 0,70 = 0,63
+ Si la alarma no sonó:  0,05 × 0,01 = 0,0005]
+[TEXTO_TTS]
+Empiezo por abajo.
+Si la alarma sonó, la probabilidad de que llamen los dos es de sesenta y tres por ciento.
+Si no sonó, es de cinco en diez mil.
+Tendría que ser una coincidencia muy rara.
+[/TEXTO_TTS]
+[PAUSA_DESPUÉS: 4]
+
+[VOZ: IA]
+[VISUAL: Rótulo: IA
+ Paso 2 — Mundo "SÍ hubo robo":
+
+ Con terremoto:  0,95 × 0,63 + 0,05 × 0,0005 = 0,598525  × P(t)  = 0,002  →  0,0011971
+ Sin terremoto:  0,94 × 0,63 + 0,06 × 0,0005 = 0,59223   × P(¬t) = 0,998  →  0,5910455
+                                                                     Suma  =  0,5922426
+                                                 × P(Robo) = 0,001        →  0,00059224]
+[TEXTO_TTS]
+Ahora imagino el mundo donde sí hubo robo.
+Considero las dos opciones del terremoto y, dentro de cada una, las dos opciones de la alarma.
+Multiplico, sumo, y al final multiplico por la probabilidad previa de robo: uno en mil.
+[/TEXTO_TTS]
+[PAUSA_DESPUÉS: 4]
+
+[VOZ: IA]
+[VISUAL: Rótulo: IA
+ Paso 3 — Mundo "NO hubo robo":
+
+ Con terremoto:  0,29  × 0,63 + 0,71  × 0,0005 = 0,183055   × 0,002  →  0,0003661
+ Sin terremoto:  0,001 × 0,63 + 0,999 × 0,0005 = 0,0011295  × 0,998  →  0,0011272
+                                                              Suma  =  0,0014934
+                                                 × P(¬Robo) = 0,999  →  0,0014919]
+[TEXTO_TTS]
+Y hago exactamente lo mismo para el mundo donde no hubo robo.
+[/TEXTO_TTS]
+[PAUSA_DESPUÉS: 4]
+
+[VOZ: ANALISTA]
+[VISUAL: Rótulo: ANALISTA
+ Paso 4 — Normalizar:
+
+ Robo:     0,00059224
+ No robo:  0,0014919
+ Total:    0,0020841
+
+ P(Robo | c, i)   = 0,00059224 / 0,0020841 ≈ 0,284  →  28,4 %
+ P(¬Robo | c, i)                           ≈ 0,716  →  71,6 %]
+[TEXTO_TTS]
+Estos dos números no suman uno, porque son pesos relativos.
+Así que los dividimos entre su total.
+Y ahí está: veintiocho coma cuatro por ciento de robo.
+Setenta y uno coma seis por ciento de que no haya ladrón.
+[/TEXTO_TTS]
+
+[VOZ: ESTUDIANTE]
+[VISUAL: Rótulo: ESTUDIANTE · Se mantiene el fondo anterior.]
+[TEXTO_TTS]
+¿Y si solo hubiera llamado Camilo?
+[/TEXTO_TTS]
+
+[VOZ: IA]
+[VISUAL: Rótulo: IA
+ Solo evidencia de Camilo: el término de Isabel suma 1 y desaparece del cálculo.
+
+ P(Robo | c)     ≈ 0,016  →   1,6 %
+ P(Robo | c, i)  ≈ 0,284  →  28,4 %]
+[TEXTO_TTS]
+Mismo procedimiento, pero sin la llamada de Isabel.
+Como Isabel ya no es evidencia, su término suma uno y desaparece.
+Resultado: uno coma seis por ciento.
+Una sola llamada casi no cambia nada.
+Pero cuando dos testigos independientes coinciden, la probabilidad se multiplica por más de diecisiete.
+[/TEXTO_TTS]
+
+[VOZ: NARRADOR]
+[VISUAL: Rótulo: NARRADOR
+ Una radio en el salón de clase: "Última hora: pequeño temblor en tu barrio."]
+[TEXTO_TTS]
+Y ahora, un giro.
+Mientras piensas qué hacer, alguien pone la radio.
+Hubo un pequeño temblor en tu barrio.
+[/TEXTO_TTS]
+
+[VOZ: IA]
+[VISUAL: Rótulo: IA
+ Misma red, misma enumeración, pero con Terremoto = V como evidencia:
+
+ P(Alarma sonó | Camilo, Isabel)              ≈ 76 %
+ P(Robo | Camilo, Isabel)                     ≈ 28,4 %
+ P(Robo | Camilo, Isabel, Terremoto)          ≈ 0,33 %
+
+ Robo y Terremoto compiten por explicar la misma alarma.]
+[TEXTO_TTS]
+Repito el cálculo, ahora con el terremoto como evidencia.
+La alarma probablemente sí sonó: eso no cambia mucho.
+Pero la probabilidad de robo se desploma: de veintiocho por ciento a un tercio de uno por ciento.
+El temblor ya explica la alarma. El ladrón ya no hace falta.
+[/TEXTO_TTS]
+[PAUSA_DESPUÉS: 3]
+
+[VOZ: PROFESORA]
+[VISUAL: Rótulo: PROFESORA · Se mantiene el fondo anterior.]
+[TEXTO_TTS]
+A esto se le llama explicación alternativa, o en inglés, explaining away.
+Fíjense en algo curioso: el robo y el terremoto no tienen nada que ver entre sí. Un ladrón no provoca temblores.
+Pero cuando tenemos evidencia de que la alarma sonó, se vuelven dependientes: saber que hubo uno hace menos probable el otro.
+Es exactamente el tipo de razonamiento que hacemos los humanos sin pensarlo, y la red lo hace con números.
+[/TEXTO_TTS]
+[FIN: 14:30]
+
+
+14:30 – 15:51
+ESCENA 7 — NO CALCULES DOS VECES LO MISMO
+[INICIO: 14:30]
+
+[VOZ: ANALISTA]
+[VISUAL: Rótulo: ANALISTA
+ Árbol de enumeración: Robo → Terremoto (V/F) → Alarma (V/F).
+En cada hoja aparece "0,63" o "0,0005", resaltado en amarillo.
+Contador: "0,63 calculado 4 veces · 0,0005 calculado 4 veces"]
+[TEXTO_TTS]
+Miren el árbol que acabamos de recorrer.
+El producto de las llamadas, ese sesenta y tres por ciento, aparece en cada combinación de robo y terremoto.
+Lo calculamos cuatro veces.
+Con cinco variables no es grave. Pero la enumeración crece exponencialmente con el número de variables, y esas repeticiones también.
+[/TEXTO_TTS]
+
+[VOZ: PROFESORA]
+[VISUAL: Rótulo: PROFESORA
+ ELIMINACIÓN DE VARIABLES — tablas que se van reduciendo:
+
+ ① Factor de las llamadas (se calcula UNA sola vez):
+      f₁(Alarma) = ⟨ 0,63 ; 0,0005 ⟩
+
+ ② Sumar fuera Alarma → f₂(Robo, Terremoto):
+      (V,V) 0,598525 | (V,F) 0,59223 | (F,V) 0,183055 | (F,F) 0,0011295
+
+ ③ Sumar fuera Terremoto → f₃(Robo):
+      ⟨ 0,592243 ; 0,001493 ⟩
+
+ ④ Multiplicar por P(Robo) → ⟨ 0,00059224 ; 0,0014919 ⟩
+ ⑤ Normalizar              → ⟨ 0,284 ; 0,716 ⟩]
+[TEXTO_TTS]
+La eliminación de variables hace el mismo cálculo, pero organizado de otra forma.
+Primero calcula el factor de las llamadas, una sola vez, y lo guarda.
+Luego elimina la alarma, sumando sobre ella. Queda una tabla más pequeña.
+Luego elimina el terremoto. Queda una tabla de solo dos números.
+Multiplicamos por la probabilidad previa, normalizamos...
+y llegamos al mismo veintiocho coma cuatro por ciento.
+Misma respuesta. Menos trabajo.
+[/TEXTO_TTS]
+
+[VOZ: IA]
+[VISUAL: Rótulo: IA · Se mantiene el fondo anterior.]
+[TEXTO_TTS]
+Es como guardar resultados parciales en una calculadora.
+Cada variable que elimino desaparece del problema, y ya no tengo que volver a pensar en ella.
+[/TEXTO_TTS]
+
+[VOZ: ANALISTA]
+[VISUAL: Rótulo: ANALISTA
+ Dos grafos:
+ Poliárbol (como máximo un camino entre dos nodos)  →  costo lineal ✓
+ Red densamente conectada                           →  costo que puede explotar ✗]
+[TEXTO_TTS]
+En redes con forma de árbol, donde entre dos nodos hay como máximo un camino, este método es rapidísimo: su costo crece de forma lineal con el tamaño de la red.
+Pero no todas las redes son tan amables.
+[/TEXTO_TTS]
+[FIN: 15:51]
+
+
+15:51 – 20:15
+ESCENA 8 — CUANDO LA RED ES GIGANTE: INFERENCIA APROXIMADA
+[INICIO: 15:51]
+
+[VOZ: NARRADOR]
+[VISUAL: Rótulo: NARRADOR
+ Una red con miles de nodos, densamente conectada. Un reloj de arena que no termina de vaciarse.]
+[TEXTO_TTS]
+En redes generales, llenas de caminos cruzados, la inferencia exacta es un problema NP difícil: el libro muestra que cualquier problema de satisfacibilidad lógica se puede convertir en una red bayesiana.
+Así que, cuando la red tiene miles de nodos, cambiamos de estrategia.
+Si no podemos calcular... simulamos.
+[/TEXTO_TTS]
+
+[VOZ: ANALISTA]
+[VISUAL: Rótulo: ANALISTA
+ Red del aspersor con sus tablas:
+
+          Nublado
+          ↙     ↘
+    Aspersor   Lluvia
+          ↘     ↙
+       Césped mojado
+
+ P(Nublado) = 0,5
+
+ Nublado | P(Aspersor) | P(Lluvia)
+    V    |    0,10     |   0,80
+    F    |    0,50     |   0,20
+
+ Aspersor | Lluvia | P(Césped mojado)
+    V     |   V    |      0,99
+    V     |   F    |      0,90
+    F     |   V    |      0,90
+    F     |   F    |      0,00]
+[TEXTO_TTS]
+Para esta parte cambiamos a otra red clásica del libro: la del aspersor.
+Cuando el día está nublado, el aspersor automático casi nunca se enciende: uno de cada diez días. Cuando está despejado, se enciende la mitad de las veces.
+Los días nublados llueve mucho más.
+Y el césped se moja si hay aspersor, lluvia, o ambos.
+[/TEXTO_TTS]
+
+[VOZ: IA]
+[VISUAL: Rótulo: IA
+ MUESTREO DIRECTO — de padres a hijos
+
+ 1. Nublado:   sorteo con probabilidad 0,5              →  V
+ 2. Aspersor:  sorteo con P(Aspersor | Nublado) = 0,10  →  F
+ 3. Lluvia:    sorteo con P(Lluvia | Nublado) = 0,80    →  V
+ 4. Césped:    sorteo con P(Césped | ¬A, L) = 0,90      →  V
+
+ Muestra generada: [Nublado = V, Aspersor = F, Lluvia = V, Césped = V]
+
+Luego empiezan a caer muchas muestras en pantalla, como fichas.]
+[TEXTO_TTS]
+El primer método es el muestreo directo. Yo juego a ser el mundo.
+Lanzo una moneda para decidir si está nublado. Sale nublado.
+Con eso, sorteo el aspersor: sale apagado.
+Sorteo la lluvia: llueve.
+Y sorteo el césped: mojado.
+Siempre de padres a hijos.
+Esa es una muestra, un mundo posible.
+Si genero miles, la frecuencia de cada evento se acerca a su probabilidad real.
+[/TEXTO_TTS]
+[PAUSA_DESPUÉS: 4]
+
+[VOZ: ESTUDIANTE]
+[VISUAL: Rótulo: ESTUDIANTE · Se mantiene el fondo anterior.]
+[TEXTO_TTS]
+¿Y si quiero una probabilidad con evidencia? Por ejemplo, ¿llueve, sabiendo que el aspersor está encendido?
+[/TEXTO_TTS]
+
+[VOZ: ANALISTA]
+[VISUAL: Rótulo: ANALISTA
+ MUESTREO POR RECHAZO — Consulta: P(Lluvia | Aspersor = V)
+
+ 100 muestras generadas
+ 73 con el aspersor apagado     →  RECHAZADAS ✗  (se tachan en rojo)
+ 27 con el aspersor encendido   →  aceptadas ✓
+      de esas 27:  8 con lluvia · 19 sin lluvia
+
+ Estimación:  8 / 27 ≈ 0,296
+ Valor exacto:         0,30]
+[TEXTO_TTS]
+Para eso está el muestreo por rechazo.
+Genero mundos y descarto los que no coinciden con la evidencia.
+En el ejemplo del libro, de cien muestras, setenta y tres tienen el aspersor apagado. Se van a la basura.
+Quedan veintisiete. En ocho de ellas llueve.
+Ocho de veintisiete: casi treinta por ciento. El valor exacto es treinta.
+Guarden ese treinta por ciento. Lo vamos a necesitar al final.
+[/TEXTO_TTS]
+
+[VOZ: PROFESORA]
+[VISUAL: Rótulo: PROFESORA
+ Si la evidencia tiene probabilidad 0,001  →  se desechan 999 de cada 1.000 muestras
+ Cada variable de evidencia adicional       →  la fracción útil cae exponencialmente]
+[TEXTO_TTS]
+El problema es el desperdicio. Botamos casi tres de cada cuatro muestras.
+Y si la evidencia fuera rara, digamos de uno en mil, botaríamos novecientas noventa y nueve de cada mil.
+Con cada variable de evidencia adicional, la cosa empeora exponencialmente.
+[/TEXTO_TTS]
+
+[VOZ: ANALISTA]
+[VISUAL: Rótulo: ANALISTA
+ Simulación de ejemplo — muestreo por rechazo, P(Lluvia | Aspersor = V), valor exacto 0,30
+
+ Muestras generadas | Aceptadas | Con lluvia | Estimación
+        100         |     33    |     11     |   0,333
+      1.000         |    314    |     93     |   0,296
+     10.000         |  3.031    |    894     |   0,295
+
+ El error típico se reduce en proporción a 1 / √n
+ (100 veces más muestras → error 10 veces menor)]
+[TEXTO_TTS]
+Aun así, funciona: con más muestras, la estimación se acerca al treinta por ciento.
+El error baja con la raíz cuadrada del número de muestras: para un error diez veces menor, necesito cien veces más muestras.
+[/TEXTO_TTS]
+[PAUSA_DESPUÉS: 3]
+
+[VOZ: IA]
+[VISUAL: Rótulo: IA
+ PONDERACIÓN POR VEROSIMILITUD — Consulta: P(Lluvia | Nublado = V, Césped = V)
+
+ Peso inicial: w = 1
+ 1. Nublado es evidencia → NO se sortea:    w = 1 × P(Nublado) = 0,5
+ 2. Aspersor: se sortea con 0,10            →  F
+ 3. Lluvia:   se sortea con 0,80            →  V
+ 4. Césped es evidencia → NO se sortea:     w = 0,5 × P(Césped | ¬A, L) = 0,5 × 0,90 = 0,45
+
+ Esta muestra vale 0,45 votos a favor de "Lluvia = V".
+ Ninguna muestra se desecha.]
+[TEXTO_TTS]
+El segundo método es más astuto: la ponderación por verosimilitud.
+La idea es no sortear la evidencia, sino fijarla.
+Solo sorteo lo que no sé. Y para compensar, le doy a cada muestra un peso según qué tan probable era la evidencia en ese mundo.
+Nublado es evidencia: no lo sorteo, y mi peso pasa a cero coma cinco.
+Sorteo el aspersor: apagado. Sorteo la lluvia: llueve.
+El césped es evidencia: multiplico el peso por la probabilidad de césped mojado con lluvia y sin aspersor.
+Peso final: cero coma cuarenta y cinco.
+Esta muestra cuenta como cuarenta y cinco centésimas de voto a favor de la lluvia.
+Y no boté ninguna.
+[/TEXTO_TTS]
+
+[VOZ: ANALISTA]
+[VISUAL: Rótulo: ANALISTA · Se mantiene el fondo anterior.]
+[TEXTO_TTS]
+Tiene un punto débil: si la evidencia está muy abajo en la red, las variables de arriba se sortean sin tenerla en cuenta, y muchas muestras terminan con pesos minúsculos.
+[/TEXTO_TTS]
+
+[VOZ: PROFESORA]
+[VISUAL: Rótulo: PROFESORA
+ MUESTREO DE GIBBS (cadena de Markov Monte Carlo)
+ Consulta: P(Lluvia | Aspersor = V, Césped = V)
+
+ Evidencia fija:          Aspersor = V, Césped = V
+ Estado inicial al azar:  [Nublado = V, Aspersor = V, Lluvia = F, Césped = V]
+ → Re-sortear Nublado dado su manto de Markov  →  F   [F, V, F, V]
+ → Re-sortear Lluvia dado su manto de Markov   →  V   [F, V, V, V]
+ → ... repetir miles de veces ...
+
+ P(Lluvia | evidencia) ≈ proporción de estados visitados con Lluvia = V]
+[TEXTO_TTS]
+Para esos casos, el capítulo presenta una tercera familia: las cadenas de Markov Monte Carlo, como el muestreo de Gibbs.
+En lugar de generar mundos desde cero, parte de un mundo cualquiera y lo va modificando, una variable a la vez.
+Cada variable se vuelve a sortear mirando solamente su manto de Markov.
+Les dije que iba a volver.
+Después de miles de pasos, la fracción del tiempo que la cadena pasó en mundos con lluvia aproxima la probabilidad que buscamos.
+[/TEXTO_TTS]
+[PAUSA_DESPUÉS: 4]
+
+[VOZ: IA]
+[VISUAL: Rótulo: IA
+ Dos caminos:
+ Inferencia exacta      →  respuesta precisa, costo que puede explotar
+ Inferencia aproximada  →  estimación que mejora con más muestras]
+[TEXTO_TTS]
+Dos estrategias: si la red lo permite, calculo exacto; si no, simulo.
+No solo necesito saber qué respuesta quiero. También cuánto cuesta encontrarla.
+[/TEXTO_TTS]
+[FIN: 20:15]
+
+
+20:15 – 24:41
+ESCENA 9 — OBSERVAR NO ES LO MISMO QUE INTERVENIR
+[INICIO: 20:15]
+
+[VOZ: NARRADOR]
+[VISUAL: Rótulo: NARRADOR
+ De nuevo la red del aspersor con sus tablas, grande, en el centro.]
+[TEXTO_TTS]
+Hasta ahora hemos hecho una sola cosa: observar el mundo y sacar conclusiones.
+Pero hay una pregunta más profunda.
+¿Qué pasa si, en lugar de mirar el mundo, lo tocas?
+[/TEXTO_TTS]
+
+[VOZ: NARRADOR]
+[VISUAL: Rótulo: NARRADOR
+ Título grande: "CASO 1 — OBSERVAR"]
+[TEXTO_TTS]
+Primer caso. Nos asomamos a la ventana y vemos que el aspersor está encendido.
+[/TEXTO_TTS]
+
+[VOZ: IA]
+[VISUAL: Rótulo: IA
+ Una flecha de información viaja HACIA ATRÁS, de Aspersor a Nublado, y luego de Nublado a Lluvia.
+
+ P(Aspersor) = 0,5 × 0,10 + 0,5 × 0,50 = 0,30
+
+ P(Nublado | Aspersor) = (0,10 × 0,5) / 0,30 = 0,05 / 0,30 ≈ 0,167   →  16,7 %
+ P(Lluvia | Aspersor)  = 0,80 × 0,167 + 0,20 × 0,833 = 0,30          →  30 %
+ P(Césped | Aspersor)  = 0,99 × 0,30 + 0,90 × 0,70 = 0,927           →  92,7 %]
+[TEXTO_TTS]
+Aplico el teorema de Bayes.
+Los aspersores se encienden más en días despejados, así que verlo encendido es una pista sobre el cielo.
+La probabilidad de que esté nublado baja del cincuenta a casi el diecisiete por ciento.
+Y como en los días despejados llueve menos, la probabilidad de lluvia también baja: del cincuenta al treinta por ciento.
+El mismo treinta por ciento que aproximamos con el muestreo por rechazo.
+La información viajó hacia atrás por una flecha, y luego hacia adelante por otra.
+[/TEXTO_TTS]
+[PAUSA_DESPUÉS: 4]
+
+[VOZ: NARRADOR]
+[VISUAL: Rótulo: NARRADOR
+ Título grande: "CASO 2 — INTERVENIR: do(Aspersor = encendido)"]
+[TEXTO_TTS]
+Segundo caso. Ahora eres tú quien sale al jardín y enciende el aspersor con tu propia mano.
+[/TEXTO_TTS]
+
+[VOZ: ESTUDIANTE]
+[VISUAL: Rótulo: ESTUDIANTE · Se mantiene el fondo anterior.]
+[TEXTO_TTS]
+Pero encender un aspersor no despeja el cielo...
+[/TEXTO_TTS]
+
+[VOZ: ANALISTA]
+[VISUAL: Rótulo: ANALISTA
+ Unas tijeras cortan la flecha Nublado → Aspersor. El nodo Aspersor queda fijo en "encendido".
+
+ Distribución original:
+ P(n, a, l, c) = P(n) · P(a | n) · P(l | n) · P(c | a, l)
+
+ Grafo mutilado (el factor del aspersor DESAPARECE):
+ P(n, l, c | do(a)) = P(n) ·    ✂    · P(l | n) · P(c | a, l)]
+[TEXTO_TTS]
+Justo eso. Y así se calcula.
+Esta es una red causal: aquí las flechas sí representan mecanismos del mundo.
+Para expresar una acción usamos el operador do, que significa "hacer".
+No es "vi que el aspersor estaba encendido". Es "yo lo encendí".
+Tomamos la misma factorización de la red, pero como ahora la causa del aspersor eres tú, cortamos la flecha que venía del clima.
+En la fórmula, eso significa borrar un solo factor: la probabilidad del aspersor dado el clima.
+Todo lo demás queda igual.
+A esto se le llama mutilar el grafo.
+[/TEXTO_TTS]
+[PAUSA_DESPUÉS: 4]
+
+[VOZ: IA]
+[VISUAL: Rótulo: IA
+ P(Nublado | do(Aspersor)) = 0,5                                  →  50 %
+ P(Lluvia | do(Aspersor))  = 0,5 × 0,80 + 0,5 × 0,20 = 0,50      →  50 %
+ P(Césped | do(Aspersor))  = 0,99 × 0,50 + 0,90 × 0,50 = 0,945   →  94,5 %]
+[TEXTO_TTS]
+Recalculo con el grafo cortado.
+La probabilidad de nublado se queda en cincuenta por ciento.
+La de lluvia, también en cincuenta.
+Encender el aspersor no me dice nada sobre el clima.
+[/TEXTO_TTS]
+[PAUSA_DESPUÉS: 4]
+
+[VOZ: NARRADOR]
+[VISUAL: Rótulo: NARRADOR
+ Tabla comparativa, lado a lado:
+
+                     OBSERVAR              INTERVENIR
+                 (veo el aspersor)      (lo enciendo yo)
+ Nublado              16,7 %                 50 %
+ Lluvia               30 %                   50 %
+ Césped mojado        92,7 %                 94,5 %]
+[TEXTO_TTS]
+El mismo aspersor. El mismo estado: encendido.
+Pero conclusiones distintas.
+Incluso el césped cambia: al observar, sospechamos un día despejado y seco, así que esperamos menos lluvia ayudando a mojarlo.
+La diferencia no está en lo que vemos, sino en cómo llegó el mundo a ese estado.
+[/TEXTO_TTS]
+
+[VOZ: ANALISTA]
+[VISUAL: Rótulo: ANALISTA
+ Solo cambian los descendientes del aspersor:
+ Nublado  →  no cambia (50 %)
+ Lluvia   →  no cambia (50 %)
+ Césped   →  cambia (94,5 %)]
+[TEXTO_TTS]
+El libro lo resume así: cuando intervenimos una variable, las únicas probabilidades que cambian son las de sus descendientes.
+Lo que está aguas arriba, las causas, queda intacto.
+[/TEXTO_TTS]
+
+[VOZ: PROFESORA]
+[VISUAL: Rótulo: PROFESORA
+ FÓRMULA DE AJUSTE (ecuación 13.20 del libro)
+ Promediar sobre los padres del aspersor:
+
+ P(Césped | do(Aspersor)) = Σₙ P(Césped | Aspersor, n) · P(n)
+
+ P(Césped | Aspersor, nublado)    = 0,99 × 0,80 + 0,90 × 0,20 = 0,972
+ P(Césped | Aspersor, despejado)  = 0,99 × 0,20 + 0,90 × 0,80 = 0,918
+
+ 0,5 × 0,972 + 0,5 × 0,918 = 0,945   ✓]
+[TEXTO_TTS]
+Y aquí va lo más poderoso: no siempre podemos intervenir.
+Con una fórmula de ajuste, el capítulo calcula el efecto de la acción usando solo datos observados.
+Separamos días nublados y despejados, calculamos el efecto en cada grupo y promediamos.
+Resultado: el mismo noventa y cuatro coma cinco por ciento, sin tocar el aspersor.
+[/TEXTO_TTS]
+[PAUSA_DESPUÉS: 4]
+
+[VOZ: ESTUDIANTE]
+[VISUAL: Rótulo: ESTUDIANTE · Se mantiene el fondo anterior.]
+[TEXTO_TTS]
+Pero eso supone que sé exactamente cómo decide el aspersor si encenderse. ¿Y si no lo sé?
+[/TEXTO_TTS]
+
+[VOZ: ANALISTA]
+[VISUAL: Rótulo: ANALISTA
+ CRITERIO DE LA PUERTA TRASERA (ecuación 13.21 del libro)
+ Camino "trasero":  Aspersor ← Nublado → Lluvia → Césped
+ Si conocemos Lluvia, esa puerta queda cerrada.
+
+ P(Césped | do(Aspersor)) = Σₗ P(Césped | Aspersor, l) · P(l)
+                          = 0,99 × 0,5 + 0,90 × 0,5 = 0,945   ✓ mismo resultado]
+[TEXTO_TTS]
+Justo esa es la pregunta del libro.
+Además del camino directo, hay una puerta trasera: del aspersor al clima, y del clima a la lluvia, que también moja el césped.
+El criterio de la puerta trasera dice que basta con condicionar en algo que cierre ese camino: la lluvia.
+Promediamos sobre días con y sin lluvia... y otra vez, noventa y cuatro coma cinco por ciento, sin saber cómo decide el aspersor.
+[/TEXTO_TTS]
+[PAUSA_DESPUÉS: 3]
+
+[VOZ: PROFESORA]
+[VISUAL: Rótulo: PROFESORA · Se mantiene el fondo anterior.]
+[TEXTO_TTS]
+El capítulo cierra esta idea con una frase fuerte: el criterio de la puerta trasera cuestiona un siglo de dogma estadístico, según el cual solo un ensayo controlado aleatorizado podía dar información causal.
+Con la estructura correcta, a veces los datos observados bastan.
+Correlación no es causalidad. Pero un buen modelo nos dice cuándo podemos pasar de una a la otra.
+[/TEXTO_TTS]
+[FIN: 24:41]
+
+
+24:41 – 27:31
+ESCENA 10 — ANÁLISIS Y APLICACIÓN: COMPUTACIÓN Y COMUNICACIONES
+[INICIO: 24:41]
+
+[VOZ: NARRADOR]
+[VISUAL: Rótulo: NARRADOR
+ Título: "Análisis y aplicación". Un centro de operaciones de red: pantallas con tráfico, routers y alertas parpadeando.]
+[TEXTO_TTS]
+Todo esto puede parecer lejano de nuestra carrera. No lo es.
+Veamos tres aplicaciones en computación y comunicaciones.
+[/TEXTO_TTS]
+
+[VOZ: ANALISTA]
+[VISUAL: Rótulo: ANALISTA
+ APLICACIÓN 1 — DIAGNÓSTICO DE FALLAS EN UNA RED
+La red de la alarma se transforma, nodo por nodo:
+ Robo          →  Falla del enlace
+ Terremoto     →  Pico de tráfico
+ Alarma        →  Pérdida de paquetes
+ Llama Camilo  →  Alerta del monitor 1
+ Llama Isabel  →  Alerta del monitor 2
+ Mismas tablas, mismos números (ejemplo ilustrativo)]
+[TEXTO_TTS]
+Primera aplicación: diagnosticar fallas en una red.
+Tomen la red de la alarma y cambien los nombres.
+El robo se vuelve una falla del enlace: rara, pero grave.
+El terremoto se vuelve un pico de tráfico, que también puede provocar pérdida de paquetes.
+La alarma es la pérdida de paquetes.
+Y Camilo e Isabel son dos sistemas de monitoreo que a veces dan falsas alertas.
+[/TEXTO_TTS]
+
+[VOZ: IA]
+[VISUAL: Rótulo: IA
+ P(Falla | Alerta 1, Alerta 2)                     ≈ 28,4 %
+ P(Falla | Alerta 1, Alerta 2, Pico de tráfico)    ≈ 0,33 %
+ → Recomendación automática: revisar el tráfico antes de enviar un técnico]
+[TEXTO_TTS]
+La matemática es idéntica.
+Con las dos alertas, la probabilidad de falla del enlace es de veintiocho por ciento.
+Pero si sé que hubo un pico de tráfico, baja a un tercio de uno por ciento.
+Es la explicación alternativa, aplicada: antes de enviar un técnico, conviene revisar el tráfico.
+En una red real, con cientos de equipos, este es justamente el tipo de problema donde la inferencia aproximada se vuelve necesaria.
+[/TEXTO_TTS]
+[PAUSA_DESPUÉS: 3]
+
+[VOZ: PROFESORA]
+[VISUAL: Rótulo: PROFESORA
+ APLICACIÓN 2 — DECODIFICACIÓN EN COMUNICACIONES
+Canal ruidoso: bits enviados → ruido → bits recibidos con errores.
+Grafo de un código: nodos de bits y nodos de paridad, con mensajes de probabilidad que circulan entre ellos.
+ Códigos turbo (redes 4G) · Códigos LDPC (redes 5G y Wi-Fi)
+ McEliece, MacKay y Cheng (1998): la decodificación turbo es un caso de la propagación de creencias de Pearl]
+[TEXTO_TTS]
+Segunda aplicación, en comunicaciones.
+Cuando un celular recibe una señal, los bits llegan contaminados por ruido.
+Los decodificadores modernos, como los de los códigos turbo y los códigos de paridad de baja densidad, tratan cada bit como una variable aleatoria dentro de un grafo probabilístico.
+Y estiman qué se envió realmente, pasando probabilidades de un nodo a otro.
+En mil novecientos noventa y ocho se demostró que la decodificación turbo es un caso del algoritmo de propagación de creencias de Judea Pearl, el mismo investigador detrás de las redes bayesianas y del operador do.
+Es inferencia aproximada funcionando en tiempo real, dentro de cada celular.
+[/TEXTO_TTS]
+
+[VOZ: ANALISTA]
+[VISUAL: Rótulo: ANALISTA
+ APLICACIÓN 3 — ¿LA CACHÉ REDUCE LA LATENCIA? (ejemplo ilustrativo, valores inventados)
+
+      Carga del servidor
+        ↙          ↘
+  Caché activada → Latencia alta
+
+ P(Carga alta) = 0,5
+ P(Caché | carga alta) = 0,8          P(Caché | carga baja) = 0,2
+
+ P(Latencia alta | ·)   | Carga alta | Carga baja
+   Con caché            |    0,5     |    0,1
+   Sin caché            |    0,8     |    0,2]
+[TEXTO_TTS]
+Tercera aplicación: la causalidad.
+Imaginen una empresa que activa una caché en sus servidores, pero sobre todo en los que tienen más carga.
+Después revisa los datos para saber si la caché sirvió.
+[/TEXTO_TTS]
+
+[VOZ: IA]
+[VISUAL: Rótulo: IA
+ OBSERVAR (datos tal cual):
+   P(Latencia alta | con caché) = 0,8 × 0,5 + 0,2 × 0,1 = 0,42
+   P(Latencia alta | sin caché) = 0,2 × 0,8 + 0,8 × 0,2 = 0,32
+   → "La caché empeora la latencia"   ✗
+
+ INTERVENIR (ajuste por la carga: puerta trasera cerrada):
+   P(Latencia alta | do(con caché)) = 0,5 × 0,5 + 0,5 × 0,1 = 0,30
+   P(Latencia alta | do(sin caché)) = 0,5 × 0,8 + 0,5 × 0,2 = 0,50
+   → La caché reduce la latencia alta del 50 % al 30 %   ✓]
+[TEXTO_TTS]
+Si solo observo, los servidores con caché tienen más latencia: cuarenta y dos por ciento contra treinta y dos.
+Parecería que la caché empeora las cosas.
+Pero es el mismo error del aspersor: la carga influye tanto en la caché como en la latencia.
+Si cierro la puerta trasera ajustando por la carga, aparece el efecto real: activar la caché baja la latencia alta del cincuenta al treinta por ciento.
+Sin este análisis, la empresa habría apagado una mejora.
+[/TEXTO_TTS]
+[PAUSA_DESPUÉS: 4]
+[FIN: 27:31]
+
+
+27:31 – 29:15
+ESCENA 11 — CONCLUSIONES Y RECOMENDACIONES
+[INICIO: 27:31]
+
+[VOZ: NARRADOR]
+[VISUAL: Rótulo: NARRADOR
+ Título: "Conclusiones y recomendaciones". Regreso a la clase del principio.
+Aparecen tres pilares, uno por uno:
+ 1. REPRESENTAR — red bayesiana: de 2ⁿ a n · 2ᵏ
+ 2. INFERIR — enumeración, eliminación de variables, muestreo
+ 3. INTERVENIR — operador do y grafo mutilado]
+[TEXTO_TTS]
+Volvamos al principio.
+Hoy vimos tres pilares.
+Representar: una red bayesiana convierte una tabla imposible en unos pocos números, gracias a la independencia condicional.
+Inferir: con enumeración, eliminación de variables o muestreo, actualizamos lo que creemos cuando llega evidencia.
+Intervenir: observar algo no es lo mismo que hacerlo ocurrir.
+[/TEXTO_TTS]
+
+[VOZ: ESTUDIANTE]
+[VISUAL: Rótulo: ESTUDIANTE · Se mantiene el fondo anterior.]
+[TEXTO_TTS]
+Y yo que al principio pensaba que dos llamadas significaban casi seguro un robo.
+[/TEXTO_TTS]
+
+[VOZ: IA]
+[VISUAL: Rótulo: IA · Se mantiene el fondo anterior.]
+[TEXTO_TTS]
+Yo también habría empezado sin saber. La diferencia es que ahora puedo decir cuánto sé.
+Uno coma seis por ciento con una llamada. Veintiocho con dos. Un tercio de uno por ciento si la radio anuncia un temblor.
+Cada dato nuevo mueve el número.
+[/TEXTO_TTS]
+
+[VOZ: PROFESORA]
+[VISUAL: Rótulo: PROFESORA
+ RECOMENDACIONES
+ 1. Construir la red en orden causal: de causas a efectos.
+ 2. Estimar las tablas con datos, validarlas con expertos y actualizarlas.
+ 3. Elegir el algoritmo según la estructura: exacto en redes pequeñas o poliárboles; muestreo en redes grandes.
+ 4. Antes de actuar, preguntar: ¿esto es una observación o una intervención?
+ 5. Comunicar probabilidades, no certezas.]
+[TEXTO_TTS]
+Y algunas recomendaciones.
+Construyan la red de las causas hacia los efectos: sale más compacta y es más fácil de explicar.
+Estimen las tablas con datos, valídenlas con expertos, y actualícenlas: una red es tan buena como sus números.
+El mundo cambia. Camilo cambia de teléfono, Isabel compra audífonos nuevos.
+Elijan el algoritmo según la estructura: cálculo exacto cuando la red lo permite, muestreo cuando es demasiado grande.
+Antes de tomar una decisión, pregúntense si están mirando una observación o evaluando una intervención.
+Y comuniquen probabilidades, no certezas.
+No se trata de tener certeza, sino de decidir mejor con lo que sabemos hoy.
+[/TEXTO_TTS]
+
+[VOZ: IA]
+[VISUAL: Rótulo: IA
+ En la pantalla del celular: "Camilo llamando..."
+ Texto: "P(Robo | Camilo) = 1,6 %"]
+[TEXTO_TTS]
+Así que, si solo llama Camilo... tranquilo. Termina tu clase.
+[/TEXTO_TTS]
+
+[VOZ: ESTUDIANTE]
+[VISUAL: Rótulo: ESTUDIANTE
+ Entra una segunda llamada: "Isabel llamando..."
+ Texto: "P(Robo | Camilo, Isabel) = 28,4 %"]
+[TEXTO_TTS]
+¿Y si también llama Isabel?
+[/TEXTO_TTS]
+
+[VOZ: NARRADOR]
+[VISUAL: Rótulo: NARRADOR
+ Aparece lentamente: "Representar · Inferir · Actualizar · Intervenir".]
+[TEXTO_TTS]
+Entonces, quizá valga la pena ir a revisar.
+[/TEXTO_TTS]
+[FIN: 29:15]
+
+
+29:15 – 29:30
+ESCENA 12 — REFERENCIAS BIBLIOGRÁFICAS
+[INICIO: 29:15]
+[SIN_VOZ]
+[DURACIÓN: 15]
+[VISUAL: Texto en pantalla, sin narración, solo música suave.
+ REFERENCIAS
+
+ Russell, S. J., y Norvig, P. (2021). Probabilistic reasoning. En Artificial intelligence: A modern approach (4.ª ed., cap. 13, pp. 412–454). Pearson.
+
+ Pearl, J. (1988). Probabilistic reasoning in intelligent systems: Networks of plausible inference. Morgan Kaufmann.
+
+ Pearl, J. (2009). Causality: Models, reasoning, and inference (2.ª ed.). Cambridge University Press.
+
+ Koller, D., y Friedman, N. (2009). Probabilistic graphical models: Principles and techniques. MIT Press.
+
+ McEliece, R. J., MacKay, D. J. C., y Cheng, J.-F. (1998). Turbo decoding as an instance of Pearl's "belief propagation" algorithm. IEEE Journal on Selected Areas in Communications, 16(2), 140–152.
+
+ Pradhan, M., Provan, G., Middleton, B., y Henrion, M. (1994). Knowledge engineering for large belief networks. En Proceedings of the Tenth Conference on Uncertainty in Artificial Intelligence (UAI-94). Morgan Kaufmann.
+
+ Nota: los ejemplos de diagnóstico de red y de la caché son ilustrativos y fueron elaborados por el grupo.]
+[FIN: 29:30]
+
+
+29:30 – 29:45
+ESCENA 13 — CRÉDITOS DE ROLES
+[INICIO: 29:30]
+[SIN_VOZ]
+[DURACIÓN: 15]
+[VISUAL: Créditos finales en desplazamiento vertical, sin narración, solo música.
+ CRÉDITOS
+
+ Julián David Albarracín Galindo
+ Andrés David Caro Mora
+ Daniel Alfonso Cely Infante
+ Camilo Ferney Londoño Moreno
+ Daniel Alejandro Ochoa Ruiz
+ Sara Isabel Ospina Valderrama
+ Juan Camilo Vergara Tao
+
+ Profesor: Jorge Eduardo Ortiz Triviño
+ Modelos Estocásticos y Simulación en Computación y Comunicaciones · Grupo 2 · 2026-2
+ Universidad Nacional de Colombia
+
+ Al final, logo de la Universidad Nacional de Colombia (archivo: assets/logo_unal.png). Fundido a negro.]
+[FIN: 29:45]
+
+FIN DEL GUION
