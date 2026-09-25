@@ -4,5 +4,5 @@ venv/
 # Salidas generadas (se regeneran con herramientas/generar_audio.py y manim)
 audio/
 media/
+salida/
 __pycache__/
-poc/muestras/
